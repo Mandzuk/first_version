@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Мар 23 2016 г., 09:34
+-- Время создания: Мар 23 2016 г., 12:21
 -- Версия сервера: 5.6.24
 -- Версия PHP: 5.6.8
 
@@ -40,7 +40,10 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('admin', '1', 1458692336),
 ('user', '10', 1458698346),
 ('user', '11', 1458699097),
-('user', '12', 1458700357);
+('user', '12', 1458700357),
+('user', '13', 1458723933),
+('user', '14', 1458726996),
+('user', '15', 1458732018);
 
 -- --------------------------------------------------------
 
@@ -113,17 +116,18 @@ CREATE TABLE IF NOT EXISTS `invitation` (
   `sent_date` date DEFAULT NULL,
   `registration_date` date DEFAULT NULL,
   `date_of_last_sign_in` date DEFAULT NULL,
-  `status` mediumtext COLLATE utf8_unicode_ci,
+  `status` int(11) DEFAULT '1',
   `id_user` int(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Дамп данных таблицы `invitation`
 --
 
 INSERT INTO `invitation` (`id`, `name`, `email`, `sent_date`, `registration_date`, `date_of_last_sign_in`, `status`, `id_user`) VALUES
-(3, 'eergerg', 'dgtd@test.com', NULL, NULL, NULL, 'dfvfdv', 2),
-(4, 'artem', 'artem@mandzuk@gmail.ru', NULL, NULL, NULL, '', 11);
+(4, 'artemon', 'artem@mandzuk@gmail.ru', '2016-03-23', NULL, NULL, 1, 1),
+(5, 'Ihorek', 'ihor@gmail.com', '2016-03-23', NULL, NULL, 1, 1),
+(6, 'bodya', 'bodya@mail.ua', '2016-03-23', NULL, NULL, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -172,23 +176,30 @@ INSERT INTO `profile` (`user_id`, `name`, `last_name`, `sex`) VALUES
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `auth_key` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sex` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `location` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `data_registration` date NOT NULL,
   `status` smallint(6) NOT NULL DEFAULT '10',
   `created_at` int(11) NOT NULL,
   `updated_at` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Дамп данных таблицы `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `auth_key`, `password_hash`, `password_reset_token`, `email`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'l1M5MuiCalgPjc8cODSnvDIWueBoPW8_', '$2y$13$LPmZe2yVL4eKBa1PYk40F.YEXEYHc4ZqkWMInoOX/LaAvZK7rEylC', NULL, 'artem.mandzuk@gmail.com', 10, 1458202909, 1458202909),
-(11, 'artem', 'GPh0lerd-DguyYt6iXkCeLBoGbLVR-H6', '$2y$13$nLYVuAedAo7zdOaUx85iEeO4ylufH3gUdkcqIbhaUS0RRQYAqASWq', NULL, 'artem@gmail.com', 10, 1458699097, 1458699097),
-(12, 'Artem  Mandzyuk', 'lAmN_UbrPsapcoqg6C2rBU0K5cNOnyNP', '$2y$13$Vh.XDVUZesa.gosMpGxc0uv5Af.nP1qQhtuTixplTjfbxj7IltKzC', NULL, '', 10, 1458700357, 1458700357);
+INSERT INTO `user` (`id`, `username`, `name`, `auth_key`, `password_hash`, `password_reset_token`, `email`, `sex`, `location`, `data_registration`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'admin', '', 'l1M5MuiCalgPjc8cODSnvDIWueBoPW8_', '$2y$13$LPmZe2yVL4eKBa1PYk40F.YEXEYHc4ZqkWMInoOX/LaAvZK7rEylC', NULL, 'artem.mandzuk@gmail.com', NULL, '', '0000-00-00', 10, 1458202909, 1458731885),
+(11, 'artem', '', 'GPh0lerd-DguyYt6iXkCeLBoGbLVR-H6', '$2y$13$nLYVuAedAo7zdOaUx85iEeO4ylufH3gUdkcqIbhaUS0RRQYAqASWq', NULL, 'artem@gmail.com', NULL, '', '0000-00-00', 10, 1458699097, 1458731640),
+(12, 'Artem  Mandzyuk', '', 'lAmN_UbrPsapcoqg6C2rBU0K5cNOnyNP', '$2y$13$Vh.XDVUZesa.gosMpGxc0uv5Af.nP1qQhtuTixplTjfbxj7IltKzC', NULL, '', NULL, '', '0000-00-00', 10, 1458700357, 1458700357),
+(13, 'retro', NULL, '7OJNetmkY6aDdtu6nVKA_jL2EEgXkxcX', '$2y$13$MgngX.oWlcZwVomYnKw6C.0KfCpZfnpjaZBdviTuA8wphSRV49RR2', NULL, 'retro@gmail.com', 'man', 'Ukraine', '0000-00-00', 10, 1458723933, 1458723933),
+(14, 'qwe', NULL, 'Slen5yj2hVjmCrxYXwIrEBlTeB2eJDyG', '$2y$13$khMJlLvxwvBRowATHF2lieEZRNDVXFK3a7n4KW2qhGDSsR9nT.tiy', NULL, 'qwe@qwe.com', 'man', 'Ukraine', '2016-03-23', 10, 1458726996, 1458730138),
+(15, 'ret', NULL, 'I3edz_znLJwI0NpwbMNK0-gtkwzlpEAc', '$2y$13$JJ8qxFGryHjSeybCCYS28eYMk8rxIppo9wKuZ4mXVX2Q7Yxckx3he', NULL, 'ret@nas.com', 'man', 'Ukraine', '2016-03-23', 10, 1458732018, 1458732037);
 
 --
 -- Индексы сохранённых таблиц
@@ -258,12 +269,12 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `invitation`
 --
 ALTER TABLE `invitation`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --

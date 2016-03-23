@@ -32,7 +32,7 @@ class Invitation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'email', 'status'], 'string'],
+            [['name', 'email'], 'string'],
             [['sent_date', 'registration_date', 'date_of_last_sign_in'], 'safe'],
             [['id_user'], 'integer'],
         ];

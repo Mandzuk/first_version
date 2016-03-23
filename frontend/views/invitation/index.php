@@ -25,9 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php 
+<<<<<<< HEAD
         if($userRole=='1'){
-            $buttons_options = ['class' => 'yii\grid\ActionColumn', 'template' => '{view}{update}{delete}'];
+            $buttons_options = ['class' => 'yii\grid\ActionColumn', 'template' => '{view}{update}'];
+
         }elseif($userRole=='0'){
+=======
+        if($userRole){
+            $buttons_options = ['class' => 'yii\grid\ActionColumn', 'template' => '{view}{update}{delete}'];
+        }else{
+>>>>>>> 4aced89c778f3ae93373c104f803095a735f9cc2
             $buttons_options = ['class' => 'yii\grid\ActionColumn', 'template' => '{view}'];           
         }
 
@@ -44,9 +51,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:ntext',
             'sent_date',
             'registration_date',
-            // 'date_of_last_sign_in',
-            // 'status:ntext',
-            // 'id_user',
+            'date_of_last_sign_in',
+            'status:ntext',
+            'id_user',
 
             $buttons_options, 
         ],

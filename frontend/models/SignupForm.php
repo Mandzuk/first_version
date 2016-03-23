@@ -4,7 +4,7 @@ namespace frontend\models;
 use common\models\User;
 use yii\base\Model;
 use Yii;
-
+date_default_timezone_set('UTC');
 /**
  * Signup form
  */
@@ -61,6 +61,8 @@ class SignupForm extends Model
         $user->username = $this->username;
         $user->email = $this->email;
         $user->sex = $this->sex;
+        $today = date("Y-m-d");
+        $user->data_registration = $today;
         $user->location = $this->location;
         $user->setPassword($this->password);
         $user->generateAuthKey();
@@ -73,6 +75,8 @@ class SignupForm extends Model
             $userRole = $auth->getRole('user');
             $auth->assign($userRole, $user->getId());
         }
+
+        $this->sendEmail($this->email);
         
         return $save_user;
     }
@@ -92,9 +96,10 @@ class SignupForm extends Model
 
         $user = new User();
         $user->username = $profile['name'];
-        //$user->email = $profile['email'];
+        $user->email = $profile['email'];
         $user->setPassword('1234567u');
         $user->generateAuthKey();
+
 
         $save_user = $user->save() ? $user : null;
 
@@ -103,8 +108,40 @@ class SignupForm extends Model
             $userRole = $auth->getRole('user');
             $auth->assign($userRole, $user->getId());
         }
+   
+        $this->sendEmail($profile['email']);
         
         return $save_user;
     }    
+
+
+
+
+    /**
+     * Sends an email to the specified email address using the information collected by this model.
+     *
+     * @param  string  $email the target email address
+     * @return boolean whether the email was sent
+     */
+    public function sendEmail($email)
+    {
+        /* @var $user User */
+        $user = User::findOne([
+            'email' => $email,
+        ]);
+
+        return Yii::$app->mailer->compose()
+            ->setTo($email)
+            ->setFrom(['robot@test.my' => $user->username])
+            ->setSubject('регистрація на test.my')
+            ->setTextBody('Ссилка на скачку порно: http://test.my/index.php?r=site/index&key='.$user->auth_key )
+            ->send();
+    }
+
+
+
+
+
+
 
 }

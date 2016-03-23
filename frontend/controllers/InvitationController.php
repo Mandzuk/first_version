@@ -42,11 +42,6 @@ class InvitationController extends Controller
                         'roles' => ['admin'],
                     ],
                     [
-                        'actions' => ['delete'],
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ],
-                    [
                         'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['admin','user'],
@@ -73,7 +68,7 @@ class InvitationController extends Controller
             $searchModel = new InvitationSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-            $user_role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
+            //$user_role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
 
             return $this->render('index', [
                 'searchModel' => $searchModel,
@@ -165,13 +160,13 @@ class InvitationController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
-     */
+     *//*
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
+    }*/
 
     /**
      * Finds the Invitation model based on its primary key value.

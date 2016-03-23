@@ -2,6 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\rbac\ManagerInterface;
+
+date_default_timezone_set('UTC');
+$today = date("Y-m-d");
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Invitation */
@@ -12,19 +16,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'name')->textInput() ?>
 
-    <?= $form->field($model, 'email')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'email')->textInput() ?>
 
-    <?= $form->field($model, 'sent_date')->textInput() ?>
+    <!-- треба додати перевірку на адміна-->
 
-    <?= $form->field($model, 'registration_date')->textInput() ?>
+    <?= $form->field($model, 'status[]')->dropDownList(['1' => 'В ожидании ответа', '2' => 'Заблокирован', '3' => 'Подтвержден']) ?>
 
-    <?= $form->field($model, 'date_of_last_sign_in')->textInput() ?>
+    <?= $form->field($model, 'sent_date')->hiddenInput(['value' => $today])->label('') ?>
 
-    <?= $form->field($model, 'status')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'id_user')->textInput() ?>
+    <?= $form->field($model, 'id_user')->hiddenInput(['value' => Yii::$app->user->id])->label('') ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

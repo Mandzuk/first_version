@@ -17,10 +17,11 @@ use yii\rbac\ManagerInterface;
 
     <?= $form->field($model, 'name')->textInput() ?>
 
-    <?= $form->field($model, 'sex')->textInput() ?>
+    <?= $form->field($model, 'sex[]')->dropDownList(['Man' => 'man', 'woman' => 'woman'])  ?>
 
     <?= $form->field($model, 'location')->textInput() ?>
 
+    <!--Додати перевірку-->
     <?php if(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id) == 'admin'):?>
 
     <?= $form->field($model, 'status')->textInput() ?>
