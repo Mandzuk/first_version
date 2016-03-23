@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\rbac\ManagerInterface;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
@@ -14,7 +15,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'username')->textInput() ?>
 
+    <?= $form->field($model, 'name')->textInput() ?>
+
+    <?= $form->field($model, 'sex')->textInput() ?>
+
+    <?= $form->field($model, 'location')->textInput() ?>
+
+    <?php if(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id) == 'admin'):?>
+
     <?= $form->field($model, 'status')->textInput() ?>
+
+	<?php endif;?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -43,7 +43,7 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-                    [
+                    /*[
                         'actions' => ['profile'],
                         'allow' => true,
                         'roles' => ['admin','user'],
@@ -52,7 +52,7 @@ class SiteController extends Controller
                         'actions' => ['updateprofile'],
                         'allow' => true,
                         'roles' => ['admin','user'],
-                    ],
+                    ],*/
 
                 ],
             ],
@@ -233,7 +233,7 @@ class SiteController extends Controller
      * @return mixed
      */
         /* Edit profile*/
-    public function actionProfile()
+    /*public function actionProfile()
     {
         $model = Profile::findOne(Yii::$app->user->id);
 
@@ -262,7 +262,7 @@ class SiteController extends Controller
                 'model' => $model
             ]
         );
-    }
+    }*/
 
     /* user`s Invations  */
   /*  public function actionInvitation()

@@ -51,6 +51,10 @@ class User extends ActiveRecord implements IdentityInterface
         $id = $service->getServiceName().'-'.$service->getId();
         $attributes = [
             'id' => $id,
+            //'name' => $name,
+            //'sex' => $sex,
+            //'location' => $location,
+            //'data_registration' => $data_registration,
             'username' => $service->getAttribute('name'),
             'authKey' => md5($id),
             'profile' => $service->getAttributes(),
