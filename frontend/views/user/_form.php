@@ -17,7 +17,7 @@ use yii\rbac\ManagerInterface;
 
     <?= $form->field($model, 'name')->textInput() ?>
 
-    <?= $form->field($model, 'sex[]')->dropDownList(['Man' => 'man', 'woman' => 'woman'])  ?>
+    <?= $form->field($model, 'sex')->dropDownList(['man' => 'man', 'woman' => 'woman'])  ?>
 
     <?= $form->field($model, 'location')->textInput() ?>
 

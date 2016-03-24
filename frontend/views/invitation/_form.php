@@ -13,6 +13,7 @@ $today = date("Y-m-d");
 ?>
 
 <div class="invitation-form">
+    <h1><?= $userRole; ?></h1>
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -20,9 +21,7 @@ $today = date("Y-m-d");
 
     <?= $form->field($model, 'email')->textInput() ?>
 
-    <!-- треба додати перевірку на адміна-->
-
-    <?= $form->field($model, 'status[]')->dropDownList(['1' => 'В ожидании ответа', '2' => 'Заблокирован', '3' => 'Подтвержден']) ?>
+    <?= $form->field($model, 'status')->dropDownList(['1' => 'В ожидании ответа', '2' => 'Заблокирован', '3' => 'Подтвержден']) ?>
 
     <?= $form->field($model, 'sent_date')->hiddenInput(['value' => $today])->label('') ?>
 

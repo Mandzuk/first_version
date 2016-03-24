@@ -8,7 +8,7 @@ date_default_timezone_set('UTC');
 /**
  * Signup form
  */
-class SignupForm extends Model
+class InvitationForm extends Model
 {
     public $username;
     public $email;
@@ -66,7 +66,6 @@ class SignupForm extends Model
         $user->location = $this->location;
         $user->setPassword($this->password);
         $user->generateAuthKey();
-        $user->status = 6;
 
         $save_user = $user->save() ? $user : null;
 
@@ -102,7 +101,6 @@ class SignupForm extends Model
         $user->generateAuthKey();
 
 
-
         $save_user = $user->save() ? $user : null;
 
         if($save_user){
@@ -116,41 +114,7 @@ class SignupForm extends Model
         return $save_user;
     }    
 
-    public function signupinv($inv)
-    {
-        if (!$inv->validate()) {
-            return null;
-        }
-        
-        $user = new User();
-        $user->username = $inv->name;
-        $user->email = $inv->email;
-        $today = date("Y-m-d");
-        $user->data_registration = $today;
 
-        $user->setPassword($this->password);
-        $user->generateAuthKey();
-        $user->status = 10;
-
-        $save_user = $user->save() ? $user : null;
-
-
-        if($save_user){
-            $auth = Yii::$app->authManager;
-            $userRole = $auth->getRole('user');
-            $auth->assign($userRole, $user->getId());
-        }
-
-        
-        return $save_user;
-    }
-
-    public function changeStatust($status)
-    {
-        $change = Invitation::find()->where(['auth_key' => $key])->one();
-        $change->status = 3;
-        return $change->save() ? true : false;
-    }
 
 
     /**
@@ -168,9 +132,9 @@ class SignupForm extends Model
 
         return Yii::$app->mailer->compose()
             ->setTo($email)
-            ->setFrom(['robot@test.my'])
+            ->setFrom(['robot@test.my' => $user->username])
             ->setSubject('регистрація на test.my')
-            ->setTextBody('Ссилка на подтверждение: http://test.my/index.php?r=site/activatekey&key='.$user->auth_key )
+            ->setTextBody('Ссилка на подтверждение: http://test.my/index.php?r=site/index&key='.$user->auth_key )
             ->send();
     }
 

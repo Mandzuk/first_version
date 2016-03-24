@@ -132,28 +132,10 @@ class SiteController extends Controller
                 if ($eauth->authenticate()) {
                     //var_dump($eauth->getIsAuthenticated(), $eauth->getAttributes()); exit;
 
-
-
                     $identity = User::findByEAuth($eauth);
                     Yii::$app->getUser()->login($identity);
 
-
-                    $UserIdentity = Yii::$app->getUser()->getIdentity();
-                    $userExist = User::find()->where(['username'=> $UserIdentity->profile['name'] ])->all();
-                    //var_dump($UserIdentity->profile); exit;
-                    if(!$userExist){
-                        $model = new SignupForm();
-
-                        if ($user_email = $model->signupFB($UserIdentity->profile)) {
-                            // special redirect with closing popup window
-                            $eauth->redirect();
-                        }else{
-                            echo "Can`t save user data in DB"; exit;
-                        }
-                    }else{
-                        // special redirect with closing popup window
-                        $eauth->redirect();                        
-                    }
+                    $eauth->redirect();  
 
                 }
                 else {
@@ -345,6 +327,28 @@ class SiteController extends Controller
         return $this->render('signup', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * Signs user up.
+     *
+     */
+    public function actionActivatekey($key)
+    {
+        $get_user = User::find()->where(['auth_key' => $key])->one();
+        
+        if($get_user){
+            $change_status = new User($get_user);
+            $change_status->changeStatust();
+            $get_user->status = $get_user::STATUS_AUTH;
+            $save_user = $get_user->save() ? $get_user : null;
+        }
+        else{
+            
+        }
+
+        return $this->goHome();
+
     }
 
     /**

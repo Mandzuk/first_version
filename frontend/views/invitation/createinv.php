@@ -2,21 +2,20 @@
 
 use yii\helpers\Html;
 
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Invitation */
 
-$this->title = 'Update Invitation: ' . $model->name;
+$this->title = 'Create Invitation';
 $this->params['breadcrumbs'][] = ['label' => 'Invitations', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="invitation-update">
+<div class="invitation-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
-        'userRole' => $userRole,
     ]) ?>
 
 </div>

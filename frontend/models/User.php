@@ -25,6 +25,8 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
+    const STATUS_BLOCKED = 4;
+    const STATUS_UNACTIVE = 6;
     const STATUS_ACTIVE = 10;
 
 
@@ -49,6 +51,19 @@ class User extends ActiveRecord implements IdentityInterface
         }
 
         $id = $service->getServiceName().'-'.$service->getId();
+        $userExist = User::find()->where(['username'=> $service->getAttribute('name') ])->one();
+        if($userExist){
+            $id = $userExist->id;
+        } else{
+            if(self::signupFB($service)){
+                $userExist = User::find()->where(['username'=> $service->getAttribute('name') ])->one();
+                $id = $userExist->id;
+            }
+            else{
+                echo 'singup error';
+            }
+        }
+
         $attributes = [
             'id' => $id,
             //'name' => $name,
@@ -63,6 +78,40 @@ class User extends ActiveRecord implements IdentityInterface
         Yii::$app->getSession()->set('user-'.$id, $attributes);
         return new self($attributes);
     }
+
+    /**
+     * Signs user up FB.
+     *
+     * @return User|null the saved model or null if saving fails
+     */
+    public function signupFB($service)
+    {
+        if (!$service) {
+            return null;
+        }
+        
+
+
+        $user = new User();
+        $user->username = $service->getAttribute('name');
+        //$user->email = $service->getAttribute('email');
+        $user->setPassword('1234567u');
+        $user->generateAuthKey();
+
+
+        $save_user = $user->save() ? $user : null;
+
+        if($save_user){
+            $auth = Yii::$app->authManager;
+            $userRole = $auth->getRole('user');
+            $auth->assign($userRole, $user->getId());
+        }
+   
+        //$this->sendEmail($service->getAttribute('email'));
+        
+        return $save_user;
+    }  
+
     /* --- EAuth END --- */
 
 
@@ -93,8 +142,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['status', 'default', 'value' => self::STATUS_UNACTIVE],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED, self::STATUS_BLOCKED, self::STATUS_UNACTIVE]],
+            [['username', 'name', 'sex', 'location', 'sex'], 'string'],
+
         ];
     }
 

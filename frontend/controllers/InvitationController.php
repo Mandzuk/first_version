@@ -5,11 +5,13 @@ namespace frontend\controllers;
 use Yii;
 use app\models\Invitation;
 use app\models\InvitationSearch;
+use frontend\models\SignupForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\rbac\ManagerInterface;
+use frontend\controller\SiteController;
 
 /**
  * InvitationController implements the CRUD actions for Invitation model.
@@ -123,7 +125,7 @@ class InvitationController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+   /* public function actionCreate()
     {
         $model = new Invitation();
 
@@ -134,7 +136,70 @@ class InvitationController extends Controller
                 'model' => $model,
             ]);
         }
+    }*/
+    public function actionCreate()
+    {
+        $model = new Invitation();
+
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            if($model->createInvitation($model))
+            {
+                if($model->save()){
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+                
+            }
+            
+        } 
+        else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
     }
+
+    public function actionActivateinvitation($key)
+    {
+        if($get_invitation = Invitation::find()->where(['auth_key' => $key, 'status' => 1])->one()){
+            if($get_invitation)
+            {
+                $change_status = new Invitation();
+                $change_status->editstatusInvitation($key);
+                $model = new SignupForm();
+
+                if ($model->load(Yii::$app->request->post())) {
+                    if ($user = $model->signupinv($get_invitation)) {
+                        if (Yii::$app->getUser()->login($user)) {
+                            return $this->goHome();
+                        }
+                    }
+                } 
+            }
+        }
+        else{
+            echo ('Ваше приглашение заблокировано либо код уже использован');
+        }
+    }
+
+
+    /*public function actionSignupinv()
+    {
+        $model = new SignupForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signupinv($get_invitation)) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->goHome();
+                }
+            }
+        } 
+
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }*/
+
 
     /**
      * Updates an existing Invitation model.
@@ -146,11 +211,15 @@ class InvitationController extends Controller
     {
         $model = $this->findModel($id);
 
+        $userRole = 'Цей юзвер адмін';
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'userRole' => $userRole,
             ]);
         }
     }

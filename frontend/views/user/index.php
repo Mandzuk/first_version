@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'auth_key',
             //'password_hash',
             //'password_reset_token',
+            'data_registration',
             'email:email',
             // 'status',
             // 'created_at',

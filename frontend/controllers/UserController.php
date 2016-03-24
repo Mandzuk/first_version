@@ -82,10 +82,9 @@ class UserController extends Controller
         }
         else{
 
-            $rules_to_screen = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
+            $rules_to_screen = Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id);
             var_dump($rules_to_screen);
             echo("У вас нет прав");
-            echo (Yii::$app->user->id);
         }
     }
     /*
